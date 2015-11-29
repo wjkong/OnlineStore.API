@@ -11,5 +11,7 @@ namespace Kong.OnlineStoreAPI.Model
         public string Email { get; set; }
         public string Password { get; set; }
         public string Response { get; set; }
+        public string Status { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }

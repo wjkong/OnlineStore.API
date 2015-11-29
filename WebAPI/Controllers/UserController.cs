@@ -1,4 +1,5 @@
-﻿using Kong.OnlineStoreAPI.Model;
+﻿using Kong.OnlineStoreAPI.Logic;
+using Kong.OnlineStoreAPI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
+        protected UserMgr userMgr = new UserMgr();
+
         // GET route/<controller>
         public IEnumerable<string> Get()
         {
@@ -28,15 +31,13 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         // POST route/<controller>
         public IHttpActionResult Post([FromBody]User user)
         {
-
-            return Ok(0);
+            return Ok(userMgr.Add(user));
         }
 
-        // PUT api/<controller>/5
-        public IHttpActionResult Put(int id, [FromBody]User user)
+        // PUT route/<controller>
+        public IHttpActionResult Put([FromBody]User user)
         {
-            return Ok(0);
-
+            return Ok(userMgr.Modify(user));
         }
 
         // DELETE api/<controller>/5
