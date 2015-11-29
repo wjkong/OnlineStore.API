@@ -12,6 +12,8 @@ namespace Kong.OnlineStoreAPI.DAL
 {
     public class UserDacMgr : DataAccessBase
     {
+        protected SqlDataReader dreader;
+
         public bool Insert(User info)
         {
             bool success = false;
@@ -47,7 +49,56 @@ namespace Kong.OnlineStoreAPI.DAL
             return success;
         }
 
-        public object Update(User info)
+        public bool Login(User info)
+        {
+            bool success = false;
+            SqlCommand cmd = null;
+
+            try
+            {
+                using (var connection = new SqlConnection(ConnectionString))
+                {
+                    cmd = new SqlCommand();
+
+                    cmd.CommandText = @"SELECT Email FROM [EStoreUser] WHERE Email = @Email AND Password = @Password AND Status = @Status";
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = connection;
+                    cmd.Parameters.AddWithValue("@Password", info.Password);
+                    cmd.Parameters.AddWithValue("@Email", info.Email);
+                    cmd.Parameters.AddWithValue("@Status", info.Status);
+
+                    if (cmd.Connection.State == ConnectionState.Closed)
+                    {
+                        cmd.Connection.Open();
+                    }
+
+                    this.dreader = cmd.ExecuteReader();
+
+                    if (this.dreader.Read())
+                    {
+                        success = true;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (this.dreader != null)
+                {
+                    this.dreader.Close();
+                }
+
+                cmd.Connection.Close();
+            }
+
+            return success;
+        }
+  
+
+        public bool Update(User info)
         {
             bool success = false;
             SqlCommand cmd = null;

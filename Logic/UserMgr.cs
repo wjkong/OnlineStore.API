@@ -14,7 +14,9 @@ namespace Kong.OnlineStoreAPI.Logic
 
         public bool Login(User info)
         {
-            return false;
+            info.Status = "A";
+
+            return dacMgr.Login(info);
         }
         
         public bool Add(User info)
@@ -22,7 +24,7 @@ namespace Kong.OnlineStoreAPI.Logic
             return dacMgr.Insert(info);
         }
 
-        public object Modify(User info)
+        public bool Modify(User info)
         {
             info.UpdatedDate = DateTime.Now;
 

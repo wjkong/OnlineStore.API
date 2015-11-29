@@ -34,6 +34,12 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
             return Ok(userMgr.Add(user));
         }
 
+        // POST route/<controller>/action
+        public IHttpActionResult Post(string action, [FromBody]User user)
+        {
+            return Ok(userMgr.Login(user));
+        }
+
         // PUT route/<controller>
         public IHttpActionResult Put([FromBody]User user)
         {
