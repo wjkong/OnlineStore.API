@@ -29,9 +29,21 @@ namespace Kong.OnlineStoreAPI.Logic
 
         public object Modify(string action, User info)
         {
-            info.UpdatedDate = DateTime.Now;
+            bool success = false;
 
-            return dacMgr.UpdateStatus(info);
+            info.UpdatedDate = DateTime.Now;
+            info.Password = LogicHelper.RandomString(6);
+            info.Status = NUserStatus.ChangePassword.GetStrValue(); ;
+
+            if (dacMgr.UpdateStatus(info))
+            {
+                var emailMgr = new EmailMgr();
+
+                if (emailMgr.SendPwdRecoveryEmail(info))
+                    success = true;
+            }
+            
+            return success;
         }
     }
 }

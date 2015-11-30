@@ -145,9 +145,10 @@ namespace Kong.OnlineStoreAPI.DAL
                 {
                     cmd = new SqlCommand();
 
-                    cmd.CommandText = @"UPDATE [EStoreUser] SET Status = @Status, UpdatedDate = @UpdatedDate WHERE Email = @Email";
+                    cmd.CommandText = @"UPDATE [EStoreUser] SET Password = @Password, Status = @Status, UpdatedDate = @UpdatedDate WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection = connection;
+                    cmd.Parameters.AddWithValue("@Password", info.Password);
                     cmd.Parameters.AddWithValue("@Status", info.Status);
                     cmd.Parameters.AddWithValue("@UpdatedDate", info.UpdatedDate);
                     cmd.Parameters.AddWithValue("@Email", info.Email);
