@@ -1,10 +1,6 @@
 ﻿using Kong.OnlineStoreAPI.DAL;
 using Kong.OnlineStoreAPI.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kong.OnlineStoreAPI.Logic
 {
@@ -29,6 +25,13 @@ namespace Kong.OnlineStoreAPI.Logic
             info.UpdatedDate = DateTime.Now;
 
             return dacMgr.Update(info);
+        }
+
+        public object Modify(string action, User info)
+        {
+            info.UpdatedDate = DateTime.Now;
+
+            return dacMgr.UpdateStatus(info);
         }
     }
 }

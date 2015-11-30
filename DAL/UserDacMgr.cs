@@ -133,5 +133,41 @@ namespace Kong.OnlineStoreAPI.DAL
 
             return success;
         }
+
+        public bool UpdateStatus(User info)
+        {
+            bool success = false;
+            SqlCommand cmd = null;
+
+            try
+            {
+                using (var connection = new SqlConnection(ConnectionString))
+                {
+                    cmd = new SqlCommand();
+
+                    cmd.CommandText = @"UPDATE [EStoreUser] SET Status = @Status, UpdatedDate = @UpdatedDate WHERE Email = @Email";
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = connection;
+                    cmd.Parameters.AddWithValue("@Status", info.Status);
+                    cmd.Parameters.AddWithValue("@UpdatedDate", info.UpdatedDate);
+                    cmd.Parameters.AddWithValue("@Email", info.Email);
+
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                success = true;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+
+            return success;
+        }
     }
 }

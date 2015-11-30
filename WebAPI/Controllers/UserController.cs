@@ -46,6 +46,12 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
             return Ok(userMgr.Modify(user));
         }
 
+        // PUT route/<controller>/action
+        public IHttpActionResult Put(string action, [FromBody]User user)
+        {
+            return Ok(userMgr.Modify(action, user));
+        }
+
         // DELETE api/<controller>/5
         public IHttpActionResult Delete(int id)
         {
