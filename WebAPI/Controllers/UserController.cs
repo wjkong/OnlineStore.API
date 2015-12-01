@@ -19,8 +19,8 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET route/<controller>/5
-        public IHttpActionResult Get(int id)
+        // GET route/<controller>/email
+        public IHttpActionResult Get(string email)
         {
             var user = new User();
             user.Email = "mkong@dealertrac.co";

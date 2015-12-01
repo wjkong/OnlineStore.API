@@ -15,7 +15,7 @@ namespace Kong.OnlineStoreAPI.Logic
         {
             StringBuilder builder = new StringBuilder("<html><body>");
             builder.Append("<p>Thank you for your request.</p>");
-            builder.Append("<p>Temparory Password: " + info.Password + "</p>");
+            builder.Append("<p>Temparory Password: " + info.TempPassword + "</p>");
             builder.Append("<p>Login to <a href='http://apiexpert.net/estore/#/login'>Online Store</a></p>");
             builder.Append("</body></html>");
 

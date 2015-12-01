@@ -49,9 +49,10 @@ namespace Kong.OnlineStoreAPI.DAL
             return success;
         }
 
-        public bool Login(User info)
+        public User Select(string email)
         {
-            bool success = false;
+            User info = null;
+
             SqlCommand cmd = null;
 
             try
@@ -60,12 +61,11 @@ namespace Kong.OnlineStoreAPI.DAL
                 {
                     cmd = new SqlCommand();
 
-                    cmd.CommandText = @"SELECT Email FROM [EStoreUser] WHERE Email = @Email AND Password = @Password AND Status = @Status";
+                    cmd.CommandText = @"SELECT * FROM [EStoreUser] WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection = connection;
-                    cmd.Parameters.AddWithValue("@Password", info.Password);
-                    cmd.Parameters.AddWithValue("@Email", info.Email);
-                    cmd.Parameters.AddWithValue("@Status", info.Status);
+            
+                    cmd.Parameters.AddWithValue("@Email", email);
 
                     if (cmd.Connection.State == ConnectionState.Closed)
                     {
@@ -76,7 +76,12 @@ namespace Kong.OnlineStoreAPI.DAL
 
                     if (this.dreader.Read())
                     {
-                        success = true;
+                        info = new User();
+                                       
+                        info.Email = dreader["email"].ToString();
+                        info.Password = dreader["Password"].ToString();
+                        info.Status = dreader["Status"].ToString();
+                        info.TempPassword = dreader["TempPassword"] == System.DBNull.Value ? string.Empty : dreader["TempPassword"].ToString();
                     }
                 }
             }
@@ -94,9 +99,8 @@ namespace Kong.OnlineStoreAPI.DAL
                 cmd.Connection.Close();
             }
 
-            return success;
+            return info;
         }
-  
 
         public bool Update(User info)
         {
@@ -109,11 +113,13 @@ namespace Kong.OnlineStoreAPI.DAL
                 {
                     cmd = new SqlCommand();
 
-                    cmd.CommandText = @"UPDATE [EStoreUser] SET Password = @Password, UpdatedDate = @UpdatedDate WHERE Email = @Email";
+                    cmd.CommandText = @"UPDATE [EStoreUser] SET Password = @Password, Status = @Status, UpdatedDate = @UpdatedDate, TempPassword = @TempPassword WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection = connection;
                     cmd.Parameters.AddWithValue("@Password", info.Password);
+                    cmd.Parameters.AddWithValue("@Status", info.Status);
                     cmd.Parameters.AddWithValue("@UpdatedDate", info.UpdatedDate);
+                    cmd.Parameters.AddWithValue("@TempPassword", info.TempPassword);
                     cmd.Parameters.AddWithValue("@Email", info.Email);
                     
                     cmd.Connection.Open();
@@ -145,10 +151,10 @@ namespace Kong.OnlineStoreAPI.DAL
                 {
                     cmd = new SqlCommand();
 
-                    cmd.CommandText = @"UPDATE [EStoreUser] SET Password = @Password, Status = @Status, UpdatedDate = @UpdatedDate WHERE Email = @Email";
+                    cmd.CommandText = @"UPDATE [EStoreUser] SET TempPassword = @TempPassword, Status = @Status, UpdatedDate = @UpdatedDate WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection = connection;
-                    cmd.Parameters.AddWithValue("@Password", info.Password);
+                    cmd.Parameters.AddWithValue("@TempPassword", info.TempPassword);
                     cmd.Parameters.AddWithValue("@Status", info.Status);
                     cmd.Parameters.AddWithValue("@UpdatedDate", info.UpdatedDate);
                     cmd.Parameters.AddWithValue("@Email", info.Email);

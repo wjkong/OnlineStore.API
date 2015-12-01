@@ -13,10 +13,39 @@ namespace Kong.OnlineStoreAPI.Logic
 
         public bool Login(User info)
         {
-            info.Status = "A";
+            bool success = false;
+
             info.Password = StringCipher.Encrypt(info.Password, passPhrase);
 
-            return dacMgr.Login(info);
+            User user = dacMgr.Select(info.Email);
+
+            if (user != null)
+            {
+                if (user.Status == NUserStatus.Active.GetStrValue())
+                {
+                    if (info.Password == user.Password)
+                    {
+                        success = true;
+                    }
+                }
+                else if (user.Status == NUserStatus.ChangePassword.GetStrValue())
+                {
+                    if (info.Password == user.Password)
+                    {
+                        user.Password = StringCipher.Decrypt(user.Password, passPhrase);
+
+                        Modify(user);
+
+                        success = true;
+                    }
+                    else if (info.Password == user.TempPassword)
+                    {
+                        success = true;
+                    }
+                }
+            }
+
+            return success;
         }
         
         public bool Add(User info)
@@ -29,6 +58,8 @@ namespace Kong.OnlineStoreAPI.Logic
         {
             info.UpdatedDate = DateTime.Now;
             info.Password = StringCipher.Encrypt(info.Password, passPhrase);
+            info.Status = NUserStatus.Active.GetStrValue();
+            info.TempPassword = string.Empty;
 
             return dacMgr.Update(info);
         }
@@ -36,15 +67,16 @@ namespace Kong.OnlineStoreAPI.Logic
         public object Modify(string action, User info)
         {
             bool success = false;
-
+        
             info.UpdatedDate = DateTime.Now;
-            info.Password = StringCipher.Encrypt(LogicHelper.RandomString(6), passPhrase);
-            info.Status = NUserStatus.ChangePassword.GetStrValue(); ;
+            info.TempPassword = StringCipher.Encrypt(LogicHelper.RandomString(6), passPhrase);
+            info.Status = NUserStatus.ChangePassword.GetStrValue();
 
             if (dacMgr.UpdateStatus(info))
             {
                 var emailMgr = new EmailMgr();
 
+                info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
                 if (emailMgr.SendPwdRecoveryEmail(info))
                     success = true;
             }
