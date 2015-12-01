@@ -24,4 +24,11 @@ namespace Kong.OnlineStoreAPI.Model
         [StringValue("L")]
         Locked
     }
+
+    public class Result
+    {
+        public bool Success { get; set; }
+        public string Response { get; set; }
+    }
+
 }
