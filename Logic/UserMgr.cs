@@ -67,20 +67,23 @@ namespace Kong.OnlineStoreAPI.Logic
         public object Modify(string action, User info)
         {
             bool success = false;
-        
-            info.UpdatedDate = DateTime.Now;
-            info.TempPassword = StringCipher.Encrypt(LogicHelper.RandomString(6), passPhrase);
-            info.Status = NUserStatus.ChangePassword.GetStrValue();
 
-            if (dacMgr.UpdateStatus(info))
-            {
-                var emailMgr = new EmailMgr();
+            if (dacMgr.Select(info.Email) != null)
+            { 
+                info.UpdatedDate = DateTime.Now;
+                info.TempPassword = StringCipher.Encrypt(LogicHelper.RandomString(6), passPhrase);
+                info.Status = NUserStatus.ChangePassword.GetStrValue();
 
-                info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
-                if (emailMgr.SendPwdRecoveryEmail(info))
+                if (dacMgr.UpdateStatus(info))
+                {
+                    var emailMgr = new EmailMgr();
+
+                    //info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
+                    //if (emailMgr.SendPwdRecoveryEmail(info))
                     success = true;
+                }
             }
-            
+
             return success;
         }
     }

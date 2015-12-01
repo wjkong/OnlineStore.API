@@ -161,9 +161,9 @@ namespace Kong.OnlineStoreAPI.DAL
 
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
-                }
 
-                success = true;
+                    success = true;
+                }
             }
             catch
             {
