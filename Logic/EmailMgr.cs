@@ -11,24 +11,6 @@ namespace Kong.OnlineStoreAPI.Logic
 {
     public class EmailMgr
     {
-        public bool SendPwdRecoveryEmail(User info)
-        {
-            StringBuilder builder = new StringBuilder("<html><body>");
-            builder.Append("<p>Thank you for your request.</p>");
-            builder.Append("<p>Temparory Password: " + info.TempPassword + "</p>");
-            builder.Append("<p>Login to <a href='http://apiexpert.net/estore/#/login'>Online Store</a></p>");
-            builder.Append("</body></html>");
-
-            var emailInfo = new Email();
-
-            emailInfo.From = ConfigurationManager.AppSettings.Get("DefaultEmail");
-            emailInfo.Subject = "Online Store - Password recovery";
-            emailInfo.Body = builder.ToString();
-            emailInfo.To = info.Email;
-
-            return Send(emailInfo);
-        }
-
         public bool Send(Email info)
         {
             MailMessage message = null;
@@ -52,6 +34,47 @@ namespace Kong.OnlineStoreAPI.Logic
             {
                 return false;
             }
+        }
+
+        public bool SendPwdRecoveryEmail(User info)
+        {
+            StringBuilder builder = new StringBuilder("<html><body>");
+            builder.Append("<p>Thank you for your request.</p>");
+            builder.Append("<p>Temparory Password: " + info.TempPassword + "</p>");
+            builder.Append("<p>Login to <a href='http://apiexpert.net/estore/#/login'>Online Store</a></p>");
+            builder.Append("</body></html>");
+
+            var emailInfo = new Email();
+
+            emailInfo.From = ConfigurationManager.AppSettings.Get("DefaultEmail");
+            emailInfo.Subject = "Online Store - Password recovery";
+            emailInfo.Body = builder.ToString();
+            emailInfo.To = info.Email;
+
+            return Send(emailInfo);
+        }
+
+      
+
+        public bool SendRegConfirmEmail(User info)
+        {
+            StringBuilder builder = new StringBuilder("<html><body>");
+            builder.Append("<p>Thank you for registering with EStore.</p>");
+            builder.Append("");
+            //builder.Append("<p>Please click the following link to activate your account <a href='http://apiexpert.net/estore/#/activaction?token=");
+            builder.Append("<p>Please click the following link to activate your account <a href='http://localhost:2531/#/activaction?token=");
+        
+            builder.Append(info.Token + "'>EStore</a></p>");
+            builder.Append("</body></html>");
+
+            var emailInfo = new Email();
+
+            emailInfo.From = ConfigurationManager.AppSettings.Get("DefaultEmail");
+            emailInfo.Subject = "EStore- Registration confirmation";
+            emailInfo.Body = builder.ToString();
+            emailInfo.To = info.Email;
+
+            return Send(emailInfo);
         }
     }
 }

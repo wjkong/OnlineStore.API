@@ -13,6 +13,7 @@ namespace Kong.OnlineStoreAPI.Model
         public string TempPassword { get; set; }
         public string Response { get; set; }
         public string Status { get; set; }
+        public string Token { get; set; }
         public DateTime UpdatedDate { get; set; }
     }
 }

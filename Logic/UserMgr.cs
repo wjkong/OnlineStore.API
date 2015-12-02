@@ -50,8 +50,22 @@ namespace Kong.OnlineStoreAPI.Logic
         
         public bool Add(User info)
         {
+            bool success = false;
+
             info.Password = StringCipher.Encrypt(info.Password, passPhrase);
-            return dacMgr.Insert(info);
+            info.Status = NUserStatus.Inactive.GetStrValue();
+            info.Token = Guid.NewGuid().ToString();
+
+            if (dacMgr.Insert(info))
+            {
+                var emailMgr = new EmailMgr();
+                                
+                if (emailMgr.SendRegConfirmEmail(info))
+                    success = true;
+            }
+
+            return success;
+
         }
 
         public bool Modify(User info)

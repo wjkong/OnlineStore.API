@@ -25,12 +25,13 @@ namespace Kong.OnlineStoreAPI.DAL
                 {
                     cmd = new SqlCommand();
 
-                    cmd.CommandText = @"INSERT INTO [EStoreUser] (Email, Password) VALUES (@Email, @Password)";
+                    cmd.CommandText = @"INSERT INTO [EStoreUser] (Email, Password, Status, Token) VALUES (@Email, @Password, @Status, @token)";
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection = connection;
                     cmd.Parameters.AddWithValue("@Email", info.Email);
                     cmd.Parameters.AddWithValue("@Password", info.Password);
-
+                    cmd.Parameters.AddWithValue("@Status", info.Status);
+                    cmd.Parameters.AddWithValue("@Token", info.Token);
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
                 }
