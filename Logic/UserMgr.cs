@@ -78,9 +78,9 @@ namespace Kong.OnlineStoreAPI.Logic
                 {
                     var emailMgr = new EmailMgr();
 
-                    //info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
-                    //if (emailMgr.SendPwdRecoveryEmail(info))
-                    success = true;
+                    info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
+                    if (emailMgr.SendPwdRecoveryEmail(info))
+                        success = true;
                 }
             }
 

@@ -42,7 +42,9 @@ namespace Kong.OnlineStoreAPI.Logic
                 message.Subject = info.Subject;
                 message.Body = info.Body;
 
-                new SmtpClient(ConfigurationManager.AppSettings["SMTPServer"].ToString()).Send(message);
+                SmtpClient client = new SmtpClient();
+                client.EnableSsl = true;
+                client.Send(message);
 
                 return true;
             }
