@@ -43,7 +43,7 @@ namespace Kong.OnlineStoreAPI.Logic
                 message.Body = info.Body;
 
                 SmtpClient client = new SmtpClient();
-                client.EnableSsl = true;
+                //client.EnableSsl = true;
                 client.Send(message);
 
                 return true;
