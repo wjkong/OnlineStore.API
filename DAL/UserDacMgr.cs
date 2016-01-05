@@ -10,7 +10,7 @@ using System.Data;
 
 namespace Kong.OnlineStoreAPI.DAL
 {
-    public class UserDacMgr : DataAccessBase
+    public class UserDacMgr : DataAccessBase, IUserDacMgr
     {
         protected SqlDataReader dreader;
 

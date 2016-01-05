@@ -5,11 +5,21 @@ using System.Configuration;
 
 namespace Kong.OnlineStoreAPI.Logic
 {
-    public class UserMgr
+    public class UserMgr : IUserMgr
     {
         private string passPhrase = ConfigurationManager.AppSettings["passPhrase"].ToString();
 
-        protected UserDacMgr dacMgr = new UserDacMgr();
+        private IUserDacMgr dacMgr;
+
+        public UserMgr()
+        {
+        }
+
+
+        public UserMgr(IUserDacMgr dacMgr)
+        {
+            this.dacMgr = dacMgr;
+        }
 
         public bool Login(User info)
         {
@@ -78,7 +88,7 @@ namespace Kong.OnlineStoreAPI.Logic
             return dacMgr.Update(info);
         }
 
-        public object Modify(string action, User info)
+        public bool Modify(string action, User info)
         {
             bool success = false;
 

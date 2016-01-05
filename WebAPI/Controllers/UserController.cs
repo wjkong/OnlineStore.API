@@ -6,12 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Security.AntiXss;
+
 
 namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
-        protected UserMgr userMgr = new UserMgr();
+        private IUserMgr userMgr = new UserMgr();
 
         // GET route/<controller>
         public IEnumerable<string> Get()
@@ -37,6 +39,8 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         // POST route/<controller>/action
         public IHttpActionResult Post(string action, [FromBody]User user)
         {
+            AntiXssEncoder.HtmlEncode("dad", false);
+
             return Ok(userMgr.Login(user));
         }
 

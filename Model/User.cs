@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Kong.OnlineStoreAPI.Model
 {
@@ -16,4 +13,21 @@ namespace Kong.OnlineStoreAPI.Model
         public string Token { get; set; }
         public DateTime UpdatedDate { get; set; }
     }
+
+    public interface IUserMgr
+    {
+        bool Login(User info);
+        bool Add(User info);
+        bool Modify(User info);
+        bool Modify(string action, User info);
+    }
+
+    public interface IUserDacMgr
+    {
+        bool Insert(User info);
+        User Select(string email);
+        bool Update(User info);
+        bool UpdateStatus(User info);
+    }
+
 }

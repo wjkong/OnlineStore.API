@@ -62,7 +62,7 @@ namespace Kong.OnlineStoreAPI.Logic
             builder.Append("<p>Thank you for registering with EStore.</p>");
             builder.Append("");
             //builder.Append("<p>Please click the following link to activate your account <a href='http://apiexpert.net/estore/#/activaction?token=");
-            builder.Append("<p>Please click the following link to activate your account <a href='http://localhost:2531/#/activaction?token=");
+            builder.Append("<p>Please click the following link to activate your account <a href='http://localhost:2531/#/login?token=");
         
             builder.Append(info.Token + "'>EStore</a></p>");
             builder.Append("</body></html>");
