@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{BD1D7D64-DEB4-4FB0-91D3-37BA3AF92F65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.DAL", "DAL\Kong.OnlineStoreAPI.DAL.csproj", "{BD1D7D64-DEB4-4FB0-91D3-37BA3AF92F65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{C775BC75-29E1-46BD-82A8-A6382859D1D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.Model", "Model\Kong.OnlineStoreAPI.Model.csproj", "{C775BC75-29E1-46BD-82A8-A6382859D1D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{8AFD1F13-8C34-45E1-A761-D3EBDEE21C63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.Logic", "Logic\Kong.OnlineStoreAPI.Logic.csproj", "{8AFD1F13-8C34-45E1-A761-D3EBDEE21C63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{7F4CE10B-5DA5-4C9C-8B44-85138EDFAE0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.WebAPI", "WebAPI\Kong.OnlineStoreAPI.WebAPI.csproj", "{7F4CE10B-5DA5-4C9C-8B44-85138EDFAE0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

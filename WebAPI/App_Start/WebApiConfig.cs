@@ -19,6 +19,10 @@ namespace WebAPI
                 routeTemplate: "route/{controller}/{action}",
                 defaults: new { action = RouteParameter.Optional }
             );
+
+            config.Filters.Add(new ValidateModelAttribute());
         }
     }
+
+
 }

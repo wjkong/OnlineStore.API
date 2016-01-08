@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Security.AntiXss;
-
+using WebAPI;
 
 namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
@@ -31,6 +31,7 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         }
 
         // POST route/<controller>
+        [ValidateModel]
         public IHttpActionResult Post([FromBody]User user)
         {
             return Ok(userMgr.Add(user));

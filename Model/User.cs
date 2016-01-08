@@ -1,10 +1,11 @@
 ﻿using System;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace Kong.OnlineStoreAPI.Model
 {
     public class User
     {
+        [Required]
         public string Email { get; set; }
         public string Password { get; set; }
         public string TempPassword { get; set; }
@@ -29,5 +30,7 @@ namespace Kong.OnlineStoreAPI.Model
         bool Update(User info);
         bool UpdateStatus(User info);
     }
+
+   
 
 }
