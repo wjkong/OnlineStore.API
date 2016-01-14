@@ -1,10 +1,6 @@
-﻿using Kong.OnlineStoreAPI.Logic;
-using Kong.OnlineStoreAPI.Model;
-using System;
+﻿using Kong.OnlineStoreAPI.Model;
+using Microsoft.Practices.ServiceLocation;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Security.AntiXss;
 using WebAPI;
@@ -13,11 +9,18 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
-        private IUserMgr userMgr = new UserMgr();
+        private IUserMgr userMgr;
+
+        public UserController()
+        {
+            userMgr = ServiceLocator.Current.GetInstance<IUserMgr>();
+        }
 
         // GET route/<controller>
         public IEnumerable<string> Get()
         {
+            WebApiApplication.LogMgr.Info("Get method hitted");
+
             return new string[] { "value1", "value2" };
         }
 

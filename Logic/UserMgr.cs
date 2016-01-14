@@ -1,5 +1,5 @@
-﻿using Kong.OnlineStoreAPI.DAL;
-using Kong.OnlineStoreAPI.Model;
+﻿using Kong.OnlineStoreAPI.Model;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Configuration;
 
@@ -13,12 +13,7 @@ namespace Kong.OnlineStoreAPI.Logic
 
         public UserMgr()
         {
-        }
-
-
-        public UserMgr(IUserDacMgr dacMgr)
-        {
-            this.dacMgr = dacMgr;
+            dacMgr = ServiceLocator.Current.GetInstance<IUserDacMgr>();
         }
 
         public bool Login(User info)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.Logic",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.WebAPI", "WebAPI\Kong.OnlineStoreAPI.WebAPI.csproj", "{7F4CE10B-5DA5-4C9C-8B44-85138EDFAE0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kong.OnlineStoreAPI.Bootstrapper", "Kong.OnlineStoreAPI.Bootstrap\Kong.OnlineStoreAPI.Bootstrapper.csproj", "{8A2AABCE-486A-4631-947E-A35A8952063C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7F4CE10B-5DA5-4C9C-8B44-85138EDFAE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F4CE10B-5DA5-4C9C-8B44-85138EDFAE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F4CE10B-5DA5-4C9C-8B44-85138EDFAE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2AABCE-486A-4631-947E-A35A8952063C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2AABCE-486A-4631-947E-A35A8952063C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A2AABCE-486A-4631-947E-A35A8952063C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2AABCE-486A-4631-947E-A35A8952063C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
