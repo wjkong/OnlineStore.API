@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kong.ApiExpert.DAL;
 using Kong.OnlineStoreAPI.Model;
-using System.Data.SqlClient;
-using Kong.ApiExpert.DAL;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Kong.OnlineStoreAPI.DAL
 {
@@ -17,34 +12,21 @@ namespace Kong.OnlineStoreAPI.DAL
         public bool Insert(User info)
         {
             bool success = false;
-            SqlCommand cmd = null;
 
-            try
+            using (var connection = CreateConnection().OpenIt())
             {
-                using (var connection = new SqlConnection(ConnectionString))
+                using (var cmd = connection.CreateCommand())
                 {
-                    cmd = new SqlCommand();
-
                     cmd.CommandText = @"INSERT INTO [EStoreUser] (Email, Password, Status, Token) VALUES (@Email, @Password, @Status, @token)";
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Connection = connection;
-                    cmd.Parameters.AddWithValue("@Email", info.Email);
-                    cmd.Parameters.AddWithValue("@Password", info.Password);
-                    cmd.Parameters.AddWithValue("@Status", info.Status);
-                    cmd.Parameters.AddWithValue("@Token", info.Token);
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                    cmd.AddParameter("@Email", info.Email);
+                    cmd.AddParameter("@Password", info.Password);
+                    cmd.AddParameter("@Status", info.Status);
+                    cmd.AddParameter("@Token", info.Token);
 
-                success = true;
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                cmd.Connection.Close();
+                    cmd.ExecuteNonQuery();
+
+                    success = true;
+                }
             }
 
             return success;
@@ -54,50 +36,28 @@ namespace Kong.OnlineStoreAPI.DAL
         {
             User info = null;
 
-            SqlCommand cmd = null;
-
-            try
+            using (var connection = CreateConnection().OpenIt())
             {
-                using (var connection = new SqlConnection(ConnectionString))
+                using (var cmd = connection.CreateCommand())
                 {
-                    cmd = new SqlCommand();
-
                     cmd.CommandText = @"SELECT * FROM [EStoreUser] WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
-                    cmd.Connection = connection;
-            
-                    cmd.Parameters.AddWithValue("@Email", email);
 
-                    if (cmd.Connection.State == ConnectionState.Closed)
+                    cmd.AddParameter("@Email", email);
+
+                    using (var dReader = cmd.ExecuteReader())
                     {
-                        cmd.Connection.Open();
-                    }
+                        if (dReader.Read())
+                        {
+                            info = new User();
 
-                    this.dreader = cmd.ExecuteReader();
-
-                    if (this.dreader.Read())
-                    {
-                        info = new User();
-                                       
-                        info.Email = dreader["email"].ToString();
-                        info.Password = dreader["Password"].ToString();
-                        info.Status = dreader["Status"].ToString();
-                        info.TempPassword = dreader["TempPassword"] == System.DBNull.Value ? string.Empty : dreader["TempPassword"].ToString();
+                            info.Email = dReader["email"].ToString();
+                            info.Password = dReader["Password"].ToString();
+                            info.Status = dReader["Status"].ToString();
+                            info.TempPassword = dReader["TempPassword"] == System.DBNull.Value ? string.Empty : dReader["TempPassword"].ToString();
+                        }
                     }
                 }
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                if (this.dreader != null)
-                {
-                    this.dreader.Close();
-                }
-
-                cmd.Connection.Close();
             }
 
             return info;
@@ -106,36 +66,25 @@ namespace Kong.OnlineStoreAPI.DAL
         public bool Update(User info)
         {
             bool success = false;
-            SqlCommand cmd = null;
 
-            try
+            using (var connection = CreateConnection().OpenIt())
             {
-                using (var connection = new SqlConnection(ConnectionString))
+                using (var cmd = connection.CreateCommand())
                 {
-                    cmd = new SqlCommand();
-
                     cmd.CommandText = @"UPDATE [EStoreUser] SET Password = @Password, Status = @Status, UpdatedDate = @UpdatedDate, TempPassword = @TempPassword WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
-                    cmd.Connection = connection;
-                    cmd.Parameters.AddWithValue("@Password", info.Password);
-                    cmd.Parameters.AddWithValue("@Status", info.Status);
-                    cmd.Parameters.AddWithValue("@UpdatedDate", info.UpdatedDate);
-                    cmd.Parameters.AddWithValue("@TempPassword", info.TempPassword);
-                    cmd.Parameters.AddWithValue("@Email", info.Email);
-                    
-                    cmd.Connection.Open();
+
+                    cmd.AddParameter("@Password", info.Password);
+                    cmd.AddParameter("@Status", info.Status);
+                    cmd.AddParameter("@UpdatedDate", info.UpdatedDate);
+                    cmd.AddParameter("@TempPassword", info.TempPassword);
+                    cmd.AddParameter("@Email", info.Email);
+
                     cmd.ExecuteNonQuery();
+
+                    success = true;
                 }
 
-                success = true;
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                cmd.Connection.Close();
             }
 
             return success;
@@ -144,35 +93,23 @@ namespace Kong.OnlineStoreAPI.DAL
         public bool UpdateStatus(User info)
         {
             bool success = false;
-            SqlCommand cmd = null;
 
-            try
+            using (var connection = CreateConnection().OpenIt())
             {
-                using (var connection = new SqlConnection(ConnectionString))
+                using (var cmd = connection.CreateCommand())
                 {
-                    cmd = new SqlCommand();
-
                     cmd.CommandText = @"UPDATE [EStoreUser] SET TempPassword = @TempPassword, Status = @Status, UpdatedDate = @UpdatedDate WHERE Email = @Email";
                     cmd.CommandType = CommandType.Text;
-                    cmd.Connection = connection;
-                    cmd.Parameters.AddWithValue("@TempPassword", info.TempPassword);
-                    cmd.Parameters.AddWithValue("@Status", info.Status);
-                    cmd.Parameters.AddWithValue("@UpdatedDate", info.UpdatedDate);
-                    cmd.Parameters.AddWithValue("@Email", info.Email);
 
-                    cmd.Connection.Open();
+                    cmd.AddParameter("@TempPassword", info.TempPassword);
+                    cmd.AddParameter("@Status", info.Status);
+                    cmd.AddParameter("@UpdatedDate", info.UpdatedDate);
+                    cmd.AddParameter("@Email", info.Email);
+
                     cmd.ExecuteNonQuery();
 
                     success = true;
                 }
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                cmd.Connection.Close();
             }
 
             return success;

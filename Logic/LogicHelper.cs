@@ -1,13 +1,9 @@
 ﻿using Kong.OnlineStoreAPI.Model;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Kong.OnlineStoreAPI.Logic
 {
@@ -34,7 +30,9 @@ namespace Kong.OnlineStoreAPI.Logic
             return strValue;
         }
 
-       
+
+
+
     }
 
     public static class StringCipher

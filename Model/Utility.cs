@@ -1,13 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Common;
 
 namespace Kong.OnlineStoreAPI.Model
 {
-    public abstract class Utility
+    public static class Utility
     {
+        public static bool Eq(this string str, string otherStr)
+        {
+            if (str == null)
+            {
+                return otherStr == null;
+            }
+            else
+            {
+                return str.Equals(otherStr, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        public static DbConnection OpenIt(this DbConnection conn)
+        {
+            if (conn != null)
+            {
+                conn.Open();
+            }
+
+            return conn;
+        }
+
+        public static DbParameter AddParameter(this DbCommand cmd, string name, object value)
+        {
+            DbParameter param = cmd.CreateParameter();
+
+            param.ParameterName = name;
+            param.Value = value;
+
+            cmd.Parameters.Add(param);
+
+            return param;
+        }
     }
 
     public enum NUserStatus
