@@ -1,5 +1,4 @@
-﻿using Kong.ApiExpert.DAL;
-using Kong.OnlineStoreAPI.Model;
+﻿using Kong.OnlineStoreAPI.Model;
 using System.Data;
 using System.Data.SqlClient;
 
