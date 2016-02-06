@@ -7,7 +7,7 @@ namespace Kong.OnlineStoreAPI.Logic
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            container.RegisterType<ILogMgr, NLogLogger>();
+            //container.RegisterType<ILogMgr, NLogLogger>();
             container.RegisterType<IUserMgr, UserMgr>();
 
         }

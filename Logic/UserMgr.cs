@@ -11,9 +11,9 @@ namespace Kong.OnlineStoreAPI.Logic
     {
         private string passPhrase = ConfigurationManager.AppSettings["passPhrase"].ToString();
 
-        private IUserDacMgr dacMgr;
-
         private Logger logMgr = LogManager.GetCurrentClassLogger();
+
+        private IUserDacMgr dacMgr;
 
         public UserMgr()
         {

@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccessBase.cs" />
+    <Compile Include="DacBase.cs" />
     <Compile Include="Initialize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDacMgr.cs" />

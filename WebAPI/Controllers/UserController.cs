@@ -7,6 +7,7 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
+        //private IUserMgr userMgr;
         private IUserMgr userMgr;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -15,6 +16,15 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
             userMgr = ServiceLocator.Current.GetInstance<IUserMgr>();
         }
 
+        [HttpGet]
+        [Route("route/user/get")]
+        public IHttpActionResult Retrieve()
+        {
+            var user = new User();
+            user.Email = "mkong@dealertrac.co";
+            user.Password = "11111";
+            return Ok(user);
+        }
 
         [HttpPost]
         [Route("route/user/new")]

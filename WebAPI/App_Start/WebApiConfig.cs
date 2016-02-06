@@ -16,13 +16,13 @@ namespace WebAPI
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "route/{controller}/{action}",
-                defaults: new { action = RouteParameter.Optional }
-            );
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //    routeTemplate: "route/{controller}/{action}",
+            //    defaults: new { action = RouteParameter.Optional }
+            //);
 
-            config.Filters.Add(new ValidateModelAttribute());
+            //config.Filters.Add(new ValidateModelAttribute());
         }
     }
 
