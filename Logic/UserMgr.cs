@@ -1,6 +1,7 @@
 ﻿using Kong.OnlineStoreAPI.Logic.Validator;
 using Kong.OnlineStoreAPI.Model;
 using Microsoft.Practices.ServiceLocation;
+using NLog;
 using System;
 using System.Configuration;
 
@@ -11,6 +12,8 @@ namespace Kong.OnlineStoreAPI.Logic
         private string passPhrase = ConfigurationManager.AppSettings["passPhrase"].ToString();
 
         private IUserDacMgr dacMgr;
+
+        private Logger logMgr = LogManager.GetCurrentClassLogger();
 
         public UserMgr()
         {
@@ -58,34 +61,51 @@ namespace Kong.OnlineStoreAPI.Logic
         {
             ApiResponse response = new ApiResponse();
 
-            var validator = new UserRegistrtionValidator();
-            var result = validator.Validate(info);
-
-            if (result.IsValid)
+            try
             {
-                info.Password = StringCipher.Encrypt(info.Password, passPhrase);
-                info.Status = NUserStatus.Inactive.GetStrValue();
-                info.Token = Guid.NewGuid().ToString();
+                var validator = new UserRegistrtionValidator();
+                var result = validator.Validate(info);
 
-                if (dacMgr.Insert(info))
+                if (result.IsValid)
                 {
-                    var emailMgr = new EmailMgr();
+                    info.Password = StringCipher.Encrypt(info.Password, passPhrase);
+                    info.Status = NUserStatus.Inactive.GetStrValue();
+                    info.Token = Guid.NewGuid().ToString();
 
-                    if (emailMgr.SendRegConfirmEmail(info))
+                    if (dacMgr.Insert(info))
+                    {
+                        logMgr.Info("Register new an user " + info.Email);
                         response.Success = true;
+
+                        var emailMgr = new EmailMgr();
+
+                        if (!emailMgr.SendRegConfirmEmail(info))
+                            logMgr.Info("Fail to send registration email " + info.Email);
+                    }
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        response.ErrorList.Add(new Error
+                        {
+                            PropertyName = error.PropertyName,
+                            Message = error.PropertyName + error.ErrorMessage,
+                            Code = error.ErrorCode
+                        });
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                foreach (var error in result.Errors)
+                response.Success = false;
+                response.ErrorList.Add(new Error
                 {
-                    response.ErrorList.Add(new Error
-                    {
-                        PropertyName = error.PropertyName,
-                        Message = error.PropertyName + error.ErrorMessage,
-                        Code = error.ErrorCode
-                    });
-                }
+                    PropertyName = "Generic Error",
+                    Message = "Internal Server Error Code:500"
+                });
+
+                logMgr.Error(ex);
             }
 
             return response;

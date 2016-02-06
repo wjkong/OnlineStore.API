@@ -7,6 +7,7 @@ namespace Kong.OnlineStoreAPI.Model
     {
         public static readonly string REQUIRED_FIELD = " is required;";
         public static readonly string INVALID_FIELD = " is invalid format;";
+        public static readonly string INVALID_PASSWORD = " must contains at least a UPPPER and a lower letter with min. 8 characters;";
 
         public static bool Eq(this string str, string otherStr)
         {

@@ -7,13 +7,14 @@ namespace Kong.OnlineStoreAPI.Logic.Validator
     {
         public UserRegistrtionValidator()
         {
-            RuleFor(u => u.Email).NotEmpty().WithMessage(Utility.REQUIRED_FIELD).
-                Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage(Utility.INVALID_FIELD);
+            RuleFor(u => u.Email).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Email).EmailAddress().When(u => !string.IsNullOrEmpty(u.Email)).WithMessage(Utility.INVALID_FIELD);
 
             RuleFor(u => u.Password).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Password).Matches(@"(?=^.{8,16}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$").When(u => !string.IsNullOrEmpty(u.Password)).WithMessage(Utility.INVALID_PASSWORD);
 
-            RuleFor(u => u.ConfirmPassword).NotEmpty().WithMessage(Utility.REQUIRED_FIELD).
-                Equal(u => u.Password).WithMessage("doesn't match password;");
+            RuleFor(u => u.ConfirmPassword).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.ConfirmPassword).Equal(u => u.Password).When(u => !string.IsNullOrEmpty(u.ConfirmPassword)).WithMessage(" doesn't match password;");
         }
     }
 
@@ -21,8 +22,8 @@ namespace Kong.OnlineStoreAPI.Logic.Validator
     {
         public UserLoginValidator()
         {
-            RuleFor(u => u.Email).NotEmpty().WithMessage("Required").WithErrorCode("09");
-            RuleFor(u => u.Password).NotEmpty().WithMessage("Required").WithErrorCode("09");
+            RuleFor(u => u.Email).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Password).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
         }
     }
 }
