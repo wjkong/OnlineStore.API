@@ -31,7 +31,12 @@ namespace Kong.OnlineStoreAPI.Logic
         }
 
 
+        public static int? GetStrValue(this string value)
+        {
+            int? intData = null;
 
+            return intData;
+        }
 
     }
 

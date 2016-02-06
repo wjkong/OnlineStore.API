@@ -5,6 +5,9 @@ namespace Kong.OnlineStoreAPI.Model
 {
     public static class Utility
     {
+        public static readonly string REQUIRED_FIELD = " is required;";
+        public static readonly string INVALID_FIELD = " is invalid format;";
+
         public static bool Eq(this string str, string otherStr)
         {
             if (str == null)

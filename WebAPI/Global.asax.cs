@@ -30,9 +30,9 @@ namespace WebAPI
 
             Bootstrapper.Initialise();
 
-            _logMgr = ServiceLocator.Current.GetInstance<ILogMgr>();
+            //_logMgr = ServiceLocator.Current.GetInstance<ILogMgr>();
 
-            _logMgr.Info("Online Store API Application Starts");
+            //_logMgr.Info("Online Store API Application Starts");
         }
 
         protected void Application_End()

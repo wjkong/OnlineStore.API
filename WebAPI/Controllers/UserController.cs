@@ -1,70 +1,46 @@
 ﻿using Kong.OnlineStoreAPI.Model;
 using Microsoft.Practices.ServiceLocation;
-using System.Collections.Generic;
+using NLog;
 using System.Web.Http;
-using System.Web.Security.AntiXss;
-using WebAPI;
 
 namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
         private IUserMgr userMgr;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public UserController()
         {
             userMgr = ServiceLocator.Current.GetInstance<IUserMgr>();
         }
 
-        // GET route/<controller>
-        public IEnumerable<string> Get()
-        {
-            WebApiApplication.LogMgr.Info("Get method hitted");
 
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET route/<controller>/email
-        public IHttpActionResult Get(string email)
+        [HttpPost]
+        [Route("route/user/new")]
+        public IHttpActionResult Register([FromBody]User user)
         {
-            var user = new User();
-            user.Email = "mkong@dealertrac.co";
-            user.Password = "11111";
-            return Ok(user);
-        }
+            //logger.Info("Register a new user: " + user.Email);
 
-        // POST route/<controller>
-        [ValidateModel]
-        public IHttpActionResult Post([FromBody]User user)
-        {
             return Ok(userMgr.Add(user));
         }
 
-        // POST route/<controller>/action
-        public IHttpActionResult Post(string action, [FromBody]User user)
+        [HttpPost]
+        [Route("route/user/update")]
+        public IHttpActionResult Update([FromBody]User user)
         {
-            AntiXssEncoder.HtmlEncode("dad", false);
+            //logger.Info("Register a new user: " + user.Email);
 
-            return Ok(userMgr.Login(user));
-        }
-
-        // PUT route/<controller>
-        public IHttpActionResult Put([FromBody]User user)
-        {
             return Ok(userMgr.Modify(user));
         }
 
-        // PUT route/<controller>/action
-        public IHttpActionResult Put(string action, [FromBody]User user)
+        [HttpPost]
+        [Route("route/user/login")]
+        public IHttpActionResult Login([FromBody]User user)
         {
-            return Ok(userMgr.Modify(action, user));
-        }
+            //logger.Info("Register a new user: " + user.Email);
 
-        // DELETE api/<controller>/5
-        public IHttpActionResult Delete(int id)
-        {
-            return Ok(0);
-
+            return Ok(userMgr.Login(user));
         }
     }
 }

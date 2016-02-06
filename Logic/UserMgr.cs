@@ -1,4 +1,5 @@
-﻿using Kong.OnlineStoreAPI.Model;
+﻿using Kong.OnlineStoreAPI.Logic.Validator;
+using Kong.OnlineStoreAPI.Model;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Configuration;
@@ -52,24 +53,42 @@ namespace Kong.OnlineStoreAPI.Logic
 
             return success;
         }
-        
-        public bool Add(User info)
+
+        public ApiResponse Add(User info)
         {
-            bool success = false;
+            ApiResponse response = new ApiResponse();
 
-            info.Password = StringCipher.Encrypt(info.Password, passPhrase);
-            info.Status = NUserStatus.Inactive.GetStrValue();
-            info.Token = Guid.NewGuid().ToString();
+            var validator = new UserRegistrtionValidator();
+            var result = validator.Validate(info);
 
-            if (dacMgr.Insert(info))
+            if (result.IsValid)
             {
-                var emailMgr = new EmailMgr();
-                                
-                if (emailMgr.SendRegConfirmEmail(info))
-                    success = true;
+                info.Password = StringCipher.Encrypt(info.Password, passPhrase);
+                info.Status = NUserStatus.Inactive.GetStrValue();
+                info.Token = Guid.NewGuid().ToString();
+
+                if (dacMgr.Insert(info))
+                {
+                    var emailMgr = new EmailMgr();
+
+                    if (emailMgr.SendRegConfirmEmail(info))
+                        response.Success = true;
+                }
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    response.ErrorList.Add(new Error
+                    {
+                        PropertyName = error.PropertyName,
+                        Message = error.PropertyName + error.ErrorMessage,
+                        Code = error.ErrorCode
+                    });
+                }
             }
 
-            return success;
+            return response;
 
         }
 
@@ -88,7 +107,7 @@ namespace Kong.OnlineStoreAPI.Logic
             bool success = false;
 
             if (dacMgr.Select(info.Email) != null)
-            { 
+            {
                 info.UpdatedDate = DateTime.Now;
                 info.TempPassword = StringCipher.Encrypt(LogicHelper.RandomString(6), passPhrase);
                 info.Status = NUserStatus.ChangePassword.GetStrValue();

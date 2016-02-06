@@ -213,7 +213,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <None Include="NLog.xsd">
@@ -226,7 +225,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -254,6 +255,10 @@
     <ProjectReference Include="..\Kong.OnlineStoreAPI.Bootstrap\Kong.OnlineStoreAPI.Bootstrapper.csproj">
       <Project>{8a2aabce-486a-4631-947e-a35a8952063c}</Project>
       <Name>Kong.OnlineStoreAPI.Bootstrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logic\Kong.OnlineStoreAPI.Logic.csproj">
+      <Project>{8afd1f13-8c34-45e1-a761-d3ebdee21c63}</Project>
+      <Name>Kong.OnlineStoreAPI.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Kong.OnlineStoreAPI.Model.csproj">
       <Project>{c775bc75-29e1-46bd-82a8-a6382859d1d4}</Project>
