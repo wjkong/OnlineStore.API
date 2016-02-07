@@ -16,11 +16,11 @@ namespace Kong.OnlineStoreAPI.Model
 
     public interface IUserMgr
     {
-        bool Login(User info);
+        ApiResponse Login(User info);
         ApiResponse Add(User info);
         ApiResponse Activate(User info);
-        bool Modify(User info);
-        bool Modify(string action, User info);
+        ApiResponse RecoverPassword(User info);
+
     }
 
     public interface IUserDacMgr

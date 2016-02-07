@@ -9,9 +9,30 @@ namespace Kong.OnlineStoreAPI.Logic
 {
     public static class LogicHelper
     {
+        public static string ConstructPassword()
+        {
+            return RandomGetUpper(1) + RandomGetLower(1) + RandomString(6);
+        }
+
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static string RandomGetUpper(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static string RandomGetLower(int length)
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyz";
             var random = new Random();
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());

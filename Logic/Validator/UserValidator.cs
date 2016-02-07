@@ -23,7 +23,10 @@ namespace Kong.OnlineStoreAPI.Logic.Validator
         public UserLoginValidator()
         {
             RuleFor(u => u.Email).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Email).EmailAddress().When(u => !string.IsNullOrEmpty(u.Email)).WithMessage(Utility.INVALID_FIELD);
+
             RuleFor(u => u.Password).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Password).Matches(@"(?=^.{8,16}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$").When(u => !string.IsNullOrEmpty(u.Password)).WithMessage(Utility.INVALID_FIELD);
         }
     }
 
@@ -37,4 +40,14 @@ namespace Kong.OnlineStoreAPI.Logic.Validator
             RuleFor(u => u.Token).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
         }
     }
+
+    public class UserRecoverPasswordValidator : AbstractValidator<User>
+    {
+        public UserRecoverPasswordValidator()
+        {
+            RuleFor(u => u.Email).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Email).EmailAddress().When(u => !string.IsNullOrEmpty(u.Email)).WithMessage(Utility.INVALID_FIELD);
+        }
+    }
+
 }

@@ -37,13 +37,13 @@ namespace Kong.OnlineStoreAPI.Logic
             StringBuilder builder = new StringBuilder("<html><body>");
             builder.Append("<p>Thank you for your request.</p>");
             builder.Append("<p>Temparory Password: " + info.TempPassword + "</p>");
-            builder.Append(string.Format("<p>Login to <a href='{0}/#/login'>Online Store</a></p>", Utility.BASE_URL));
+            builder.Append(string.Format("<p>Login to <a href='{0}/#/login'>Online Store Login</a></p>", Utility.BASE_URL));
             builder.Append("</body></html>");
 
             var emailInfo = new Email();
 
             emailInfo.From = ConfigurationManager.AppSettings.Get("DefaultEmail");
-            emailInfo.Subject = "Online Store - Password recovery";
+            emailInfo.Subject = "Online Store - Password Recovery";
             emailInfo.Body = builder.ToString();
             emailInfo.To = info.Email;
 
@@ -57,14 +57,14 @@ namespace Kong.OnlineStoreAPI.Logic
             StringBuilder builder = new StringBuilder("<html><body>");
             builder.Append("<p>Thank you for registering with EStore.</p>");
             builder.Append("");
-            builder.Append("<p>Please click the following link to activate your account ");
-            builder.Append(string.Format("<a href='{0}/#/activate?token={1}&email={2}'>EStore</a></p>", Utility.BASE_URL, info.Token, info.Email));
+            builder.Append("<p>Please click the following link to login to your account ");
+            builder.Append(string.Format("<a href='{0}/#/login'>Online Store Login</a></p>", Utility.BASE_URL));
             builder.Append("</body></html>");
 
             var emailInfo = new Email();
 
             emailInfo.From = ConfigurationManager.AppSettings.Get("DefaultEmail");
-            emailInfo.Subject = "EStore- Registration confirmation";
+            emailInfo.Subject = "Online Store - Registration Confirmation";
             emailInfo.Body = builder.ToString();
             emailInfo.To = info.Email;
 

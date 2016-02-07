@@ -14,53 +14,82 @@ namespace Kong.OnlineStoreAPI.Logic
         private Logger logMgr = LogManager.GetCurrentClassLogger();
 
         private IUserDacMgr dacMgr;
+        private ApiResponse response;
 
         public UserMgr()
         {
             dacMgr = ServiceLocator.Current.GetInstance<IUserDacMgr>();
+            response = new ApiResponse();
         }
 
-        public bool Login(User info)
+        public ApiResponse Login(User info)
         {
-            bool success = false;
-
-            info.Password = StringCipher.Encrypt(info.Password, passPhrase);
-
-            User user = dacMgr.Select(info.Email);
-
-            if (user != null)
+            try
             {
-                if (user.Status == NUserStatus.Active.GetStrValue())
+                var validator = new UserLoginValidator();
+                var result = validator.Validate(info);
+
+                if (result.IsValid)
                 {
-                    if (info.Password == user.Password)
+                    info.Password = StringCipher.Encrypt(info.Password, passPhrase);
+
+                    User user = dacMgr.Select(info.Email);
+
+                    if (user != null)
                     {
-                        success = true;
+                        if (user.Status == NUserStatus.Active.GetStrValue())
+                        {
+                            if (info.Password == user.Password)
+                            {
+                                response.Success = true;
+                            }
+                            else
+                            {
+                                response.ErrorList.Add(new Error { Message = "Invalid email and password" });
+                            }
+                        }
+                        else if (user.Status == NUserStatus.ChangePassword.GetStrValue())
+                        {
+                            if (info.Password == user.Password)
+                            {
+                                user.Password = StringCipher.Decrypt(user.Password, passPhrase);
+
+                                Modify(user);
+
+                                response.Success = true;
+                            }
+                            else if (info.Password == user.TempPassword)
+                            {
+                                response.Success = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        response.ErrorList.Add(new Error { Message = "Invalid email and password" });
                     }
                 }
-                else if (user.Status == NUserStatus.ChangePassword.GetStrValue())
+                else
                 {
-                    if (info.Password == user.Password)
+                    foreach (var error in result.Errors)
                     {
-                        user.Password = StringCipher.Decrypt(user.Password, passPhrase);
-
-                        Modify(user);
-
-                        success = true;
-                    }
-                    else if (info.Password == user.TempPassword)
-                    {
-                        success = true;
+                        response.ErrorList.Add(new Error { Message = error.PropertyName + error.ErrorMessage });
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErrorList.Add(new Error { Message = "Internal Server Error Code:500" });
 
-            return success;
+                logMgr.Error(ex);
+            }
+
+            return response;
         }
 
         public ApiResponse Add(User info)
         {
-            ApiResponse response = new ApiResponse();
-
             try
             {
                 var validator = new UserRegistrtionValidator();
@@ -69,7 +98,7 @@ namespace Kong.OnlineStoreAPI.Logic
                 if (result.IsValid)
                 {
                     info.Password = StringCipher.Encrypt(info.Password, passPhrase);
-                    info.Status = NUserStatus.Inactive.GetStrValue();
+                    info.Status = NUserStatus.Active.GetStrValue();
                     info.Token = Guid.NewGuid().ToString();
 
                     if (dacMgr.Insert(info))
@@ -87,23 +116,14 @@ namespace Kong.OnlineStoreAPI.Logic
                 {
                     foreach (var error in result.Errors)
                     {
-                        response.ErrorList.Add(new Error
-                        {
-                            PropertyName = error.PropertyName,
-                            Message = error.PropertyName + error.ErrorMessage,
-                            Code = error.ErrorCode
-                        });
+                        response.ErrorList.Add(new Error { Message = error.PropertyName + error.ErrorMessage });
                     }
                 }
             }
             catch (Exception ex)
             {
                 response.Success = false;
-                response.ErrorList.Add(new Error
-                {
-                    PropertyName = "Generic Error",
-                    Message = "Internal Server Error Code:500"
-                });
+                response.ErrorList.Add(new Error { Message = "Internal Server Error Code:500" });
 
                 logMgr.Error(ex);
             }
@@ -113,8 +133,6 @@ namespace Kong.OnlineStoreAPI.Logic
 
         public ApiResponse Activate(User info)
         {
-            ApiResponse response = new ApiResponse();
-
             try
             {
                 var validator = new UserActivationValidator();
@@ -135,24 +153,61 @@ namespace Kong.OnlineStoreAPI.Logic
                 {
                     foreach (var error in result.Errors)
                     {
-                        response.ErrorList.Add(new Error
-                        {
-                            PropertyName = error.PropertyName,
-                            Message = error.PropertyName + error.ErrorMessage,
-                            Code = error.ErrorCode
-                        });
+                        response.ErrorList.Add(new Error { Message = error.PropertyName + error.ErrorMessage });
                     }
                 }
             }
             catch (Exception ex)
             {
                 response.Success = false;
-                response.ErrorList.Add(new Error
-                {
-                    PropertyName = "Generic Error",
-                    Message = "Internal Server Error Code:500"
-                });
+                response.ErrorList.Add(new Error { Message = "Internal Server Error Code:500" });
+                logMgr.Error(ex);
+            }
 
+            return response;
+        }
+
+        public ApiResponse RecoverPassword(User info)
+        {
+            try
+            {
+                var validator = new UserRecoverPasswordValidator();
+                var result = validator.Validate(info);
+
+                if (result.IsValid)
+                {
+                    if (dacMgr.Select(info.Email) != null)
+                    {
+                        info.UpdatedDate = DateTime.Now;
+                        info.TempPassword = StringCipher.Encrypt(LogicHelper.ConstructPassword(), passPhrase);
+                        info.Status = NUserStatus.ChangePassword.GetStrValue();
+
+                        if (dacMgr.UpdateStatus(info))
+                        {
+                            var emailMgr = new EmailMgr();
+
+                            info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
+                            if (emailMgr.SendPwdRecoveryEmail(info))
+                                response.Success = true;
+                        }
+                    }
+                    else
+                    {
+                        response.ErrorList.Add(new Error { Message = "Email doesn't exist in database" });
+                    }
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        response.ErrorList.Add(new Error { Message = error.PropertyName + error.ErrorMessage });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErrorList.Add(new Error { Message = "Internal Server Error Code:500" });
                 logMgr.Error(ex);
             }
 
@@ -168,29 +223,6 @@ namespace Kong.OnlineStoreAPI.Logic
             info.TempPassword = string.Empty;
 
             return dacMgr.Update(info);
-        }
-
-        public bool Modify(string action, User info)
-        {
-            bool success = false;
-
-            if (dacMgr.Select(info.Email) != null)
-            {
-                info.UpdatedDate = DateTime.Now;
-                info.TempPassword = StringCipher.Encrypt(LogicHelper.RandomString(6), passPhrase);
-                info.Status = NUserStatus.ChangePassword.GetStrValue();
-
-                if (dacMgr.UpdateStatus(info))
-                {
-                    var emailMgr = new EmailMgr();
-
-                    info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
-                    if (emailMgr.SendPwdRecoveryEmail(info))
-                        success = true;
-                }
-            }
-
-            return success;
         }
     }
 }

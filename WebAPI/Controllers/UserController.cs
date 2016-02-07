@@ -30,12 +30,6 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
             return Ok(userMgr.Add(user));
         }
 
-        [HttpPost]
-        [Route("route/user/update")]
-        public IHttpActionResult Update([FromBody]User user)
-        {
-            return Ok(userMgr.Modify(user));
-        }
 
         [HttpPost]
         [Route("route/user/login")]
@@ -49,6 +43,13 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         public IHttpActionResult Activate([FromBody]User user)
         {
             return Ok(userMgr.Activate(user));
+        }
+
+        [HttpPost]
+        [Route("route/user/recoverPwd")]
+        public IHttpActionResult RecoverPassword([FromBody]User user)
+        {
+            return Ok(userMgr.RecoverPassword(user));
         }
     }
 }
