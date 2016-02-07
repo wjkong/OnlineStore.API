@@ -109,8 +109,56 @@ namespace Kong.OnlineStoreAPI.Logic
             }
 
             return response;
-
         }
+
+        public ApiResponse Activate(User info)
+        {
+            ApiResponse response = new ApiResponse();
+
+            try
+            {
+                var validator = new UserActivationValidator();
+                var result = validator.Validate(info);
+
+                if (result.IsValid)
+                {
+                    info.Status = NUserStatus.Active.GetStrValue();
+                    info.UpdatedDate = DateTime.UtcNow;
+
+                    if (dacMgr.Activate(info))
+                    {
+                        logMgr.Info("Activate a new user " + info.Email);
+                        response.Success = true;
+                    }
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        response.ErrorList.Add(new Error
+                        {
+                            PropertyName = error.PropertyName,
+                            Message = error.PropertyName + error.ErrorMessage,
+                            Code = error.ErrorCode
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErrorList.Add(new Error
+                {
+                    PropertyName = "Generic Error",
+                    Message = "Internal Server Error Code:500"
+                });
+
+                logMgr.Error(ex);
+            }
+
+            return response;
+        }
+
 
         public bool Modify(User info)
         {

@@ -1,15 +1,12 @@
 ﻿using Kong.OnlineStoreAPI.Model;
 using Microsoft.Practices.ServiceLocation;
-using NLog;
 using System.Web.Http;
 
 namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
-        //private IUserMgr userMgr;
         private IUserMgr userMgr;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public UserController()
         {
@@ -30,8 +27,6 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         [Route("route/user/new")]
         public IHttpActionResult Register([FromBody]User user)
         {
-            //logger.Info("Register a new user: " + user.Email);
-
             return Ok(userMgr.Add(user));
         }
 
@@ -39,8 +34,6 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         [Route("route/user/update")]
         public IHttpActionResult Update([FromBody]User user)
         {
-            //logger.Info("Register a new user: " + user.Email);
-
             return Ok(userMgr.Modify(user));
         }
 
@@ -48,9 +41,14 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         [Route("route/user/login")]
         public IHttpActionResult Login([FromBody]User user)
         {
-            //logger.Info("Register a new user: " + user.Email);
-
             return Ok(userMgr.Login(user));
+        }
+
+        [HttpPost]
+        [Route("route/user/activate")]
+        public IHttpActionResult Activate([FromBody]User user)
+        {
+            return Ok(userMgr.Activate(user));
         }
     }
 }

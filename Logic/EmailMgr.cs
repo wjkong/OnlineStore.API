@@ -1,11 +1,7 @@
 ﻿using Kong.OnlineStoreAPI.Model;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Kong.OnlineStoreAPI.Logic
 {
@@ -41,7 +37,7 @@ namespace Kong.OnlineStoreAPI.Logic
             StringBuilder builder = new StringBuilder("<html><body>");
             builder.Append("<p>Thank you for your request.</p>");
             builder.Append("<p>Temparory Password: " + info.TempPassword + "</p>");
-            builder.Append("<p>Login to <a href='http://apiexpert.net/estore/#/login'>Online Store</a></p>");
+            builder.Append(string.Format("<p>Login to <a href='{0}/#/login'>Online Store</a></p>", Utility.BASE_URL));
             builder.Append("</body></html>");
 
             var emailInfo = new Email();
@@ -54,17 +50,15 @@ namespace Kong.OnlineStoreAPI.Logic
             return Send(emailInfo);
         }
 
-      
+
 
         public bool SendRegConfirmEmail(User info)
         {
             StringBuilder builder = new StringBuilder("<html><body>");
             builder.Append("<p>Thank you for registering with EStore.</p>");
             builder.Append("");
-            //builder.Append("<p>Please click the following link to activate your account <a href='http://apiexpert.net/estore/#/activaction?token=");
-            builder.Append("<p>Please click the following link to activate your account <a href='http://localhost:2531/#/login?token=");
-        
-            builder.Append(info.Token + "'>EStore</a></p>");
+            builder.Append("<p>Please click the following link to activate your account ");
+            builder.Append(string.Format("<a href='{0}/#/activate?token={1}&email={2}'>EStore</a></p>", Utility.BASE_URL, info.Token, info.Email));
             builder.Append("</body></html>");
 
             var emailInfo = new Email();

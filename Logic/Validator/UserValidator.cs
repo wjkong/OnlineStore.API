@@ -26,4 +26,15 @@ namespace Kong.OnlineStoreAPI.Logic.Validator
             RuleFor(u => u.Password).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
         }
     }
+
+    public class UserActivationValidator : AbstractValidator<User>
+    {
+        public UserActivationValidator()
+        {
+            RuleFor(u => u.Email).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+            RuleFor(u => u.Email).EmailAddress().When(u => !string.IsNullOrEmpty(u.Email)).WithMessage(Utility.INVALID_FIELD);
+
+            RuleFor(u => u.Token).NotEmpty().WithMessage(Utility.REQUIRED_FIELD);
+        }
+    }
 }

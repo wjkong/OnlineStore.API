@@ -18,6 +18,7 @@ namespace Kong.OnlineStoreAPI.Model
     {
         bool Login(User info);
         ApiResponse Add(User info);
+        ApiResponse Activate(User info);
         bool Modify(User info);
         bool Modify(string action, User info);
     }
@@ -28,6 +29,7 @@ namespace Kong.OnlineStoreAPI.Model
         User Select(string email);
         bool Update(User info);
         bool UpdateStatus(User info);
+        bool Activate(User info);
     }
 
 
