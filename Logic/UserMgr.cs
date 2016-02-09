@@ -52,14 +52,18 @@ namespace Kong.OnlineStoreAPI.Logic
                         {
                             if (info.Password == user.Password)
                             {
-                                user.Password = StringCipher.Decrypt(user.Password, passPhrase);
+                                info.UpdatedDate = DateTime.UtcNow;
+                                info.Password = StringCipher.Encrypt(info.Password, passPhrase);
+                                info.Status = NUserStatus.Active.GetStrValue();
+                                info.TempPassword = string.Empty;
 
-                                Modify(user);
+                                dacMgr.Update(info);
 
                                 response.Success = true;
                             }
                             else if (info.Password == user.TempPassword)
                             {
+                                response.ErrorList.Add(new Error { Code = "Required_Password_Change" });
                                 response.Success = true;
                             }
                         }
@@ -214,15 +218,51 @@ namespace Kong.OnlineStoreAPI.Logic
             return response;
         }
 
-
-        public bool Modify(User info)
+        public ApiResponse ChangePassword(User info)
         {
-            info.UpdatedDate = DateTime.Now;
-            info.Password = StringCipher.Encrypt(info.Password, passPhrase);
-            info.Status = NUserStatus.Active.GetStrValue();
-            info.TempPassword = string.Empty;
+            try
+            {
+                var validator = new UserChangePasswordValidator();
+                var result = validator.Validate(info);
 
-            return dacMgr.Update(info);
+                if (result.IsValid)
+                {
+                    if (dacMgr.Select(info.Email) != null)
+                    {
+                        info.UpdatedDate = DateTime.Now;
+                        info.TempPassword = StringCipher.Encrypt(LogicHelper.ConstructPassword(), passPhrase);
+                        info.Status = NUserStatus.ChangePassword.GetStrValue();
+
+                        if (dacMgr.UpdateStatus(info))
+                        {
+                            var emailMgr = new EmailMgr();
+
+                            info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
+                            if (emailMgr.SendPwdRecoveryEmail(info))
+                                response.Success = true;
+                        }
+                    }
+                    else
+                    {
+                        response.ErrorList.Add(new Error { Message = "Email doesn't exist in database" });
+                    }
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        response.ErrorList.Add(new Error { Message = error.ErrorMessage });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErrorList.Add(new Error { Message = "Internal Server Error Code:500" });
+                logMgr.Error(ex);
+            }
+
+            return response;
         }
     }
 }

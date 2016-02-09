@@ -51,5 +51,12 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
         {
             return Ok(userMgr.RecoverPassword(user));
         }
+
+        [HttpPost]
+        [Route("route/user/changePwd")]
+        public IHttpActionResult ChangePassword([FromBody]User user)
+        {
+            return Ok(userMgr.ChangePassword(user));
+        }
     }
 }

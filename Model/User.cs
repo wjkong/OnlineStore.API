@@ -20,7 +20,7 @@ namespace Kong.OnlineStoreAPI.Model
         ApiResponse Add(User info);
         ApiResponse Activate(User info);
         ApiResponse RecoverPassword(User info);
-
+        ApiResponse ChangePassword(User info);
     }
 
     public interface IUserDacMgr

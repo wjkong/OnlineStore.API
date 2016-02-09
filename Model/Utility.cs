@@ -9,6 +9,7 @@ namespace Kong.OnlineStoreAPI.Model
         public static readonly string REQUIRED_FIELD = " is required;";
         public static readonly string INVALID_FIELD = " is invalid format;";
         public static readonly string INVALID_PASSWORD = " must contains at least a UPPPER and a lower letter with min. 8 characters;";
+        public static readonly string VALID_PASSWORD = @"(?=^.{8,16}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$";
 
         public static readonly string BASE_URL = ConfigurationManager.AppSettings["BaseUrl"].ToString();
 
