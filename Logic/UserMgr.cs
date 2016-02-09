@@ -42,10 +42,12 @@ namespace Kong.OnlineStoreAPI.Logic
                             if (info.Password == user.Password)
                             {
                                 response.Success = true;
+                                logMgr.Info(info.Email + " successfully login");
                             }
                             else
                             {
                                 response.ErrorList.Add(new Error { Message = "Invalid email and password" });
+                                logMgr.Info(info.Email + " fails to login");
                             }
                         }
                         else if (user.Status == NUserStatus.ChangePassword.GetStrValue())
@@ -108,12 +110,14 @@ namespace Kong.OnlineStoreAPI.Logic
                     if (dacMgr.Insert(info))
                     {
                         logMgr.Info("Register new an user " + info.Email);
-                        response.Success = true;
+
 
                         var emailMgr = new EmailMgr();
 
-                        if (!emailMgr.SendRegConfirmEmail(info))
-                            logMgr.Info("Fail to send registration email " + info.Email);
+                        if (emailMgr.SendRegConfirmEmail(info))
+                            response.Success = true;
+                        else
+                            logMgr.Error(info.Email + " failed to send a registration email");
                     }
                 }
                 else
@@ -188,11 +192,15 @@ namespace Kong.OnlineStoreAPI.Logic
 
                         if (dacMgr.UpdateStatus(info))
                         {
+                            logMgr.Info(info.Email + " success to request password change");
+
                             var emailMgr = new EmailMgr();
 
                             info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
                             if (emailMgr.SendPwdRecoveryEmail(info))
                                 response.Success = true;
+                            else
+                                logMgr.Error(info.Email + " failed to send an email for password recovery");
                         }
                     }
                     else
@@ -238,8 +246,11 @@ namespace Kong.OnlineStoreAPI.Logic
                             var emailMgr = new EmailMgr();
 
                             info.TempPassword = StringCipher.Decrypt(info.TempPassword, passPhrase);
-                            if (emailMgr.SendPwdRecoveryEmail(info))
+
+                            if (emailMgr.SendPwdChangeNotifyEmail(info))
                                 response.Success = true;
+                            else
+                                logMgr.Error(info.Email + " failed to send an email for password change notification");
                         }
                     }
                     else

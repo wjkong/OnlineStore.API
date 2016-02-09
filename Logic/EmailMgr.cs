@@ -50,6 +50,24 @@ namespace Kong.OnlineStoreAPI.Logic
             return Send(emailInfo);
         }
 
+        public bool SendPwdChangeNotifyEmail(User info)
+        {
+            StringBuilder builder = new StringBuilder("<html><body>");
+            builder.Append("<p>Thank you for your request.</p>");
+            builder.Append("<p>Temparory Password: " + info.TempPassword + "</p>");
+            builder.Append(string.Format("<p>Login to <a href='{0}/#/login'>Online Store Login</a></p>", Utility.BASE_URL));
+            builder.Append("</body></html>");
+
+            var emailInfo = new Email();
+
+            emailInfo.From = ConfigurationManager.AppSettings.Get("DefaultEmail");
+            emailInfo.Subject = "Online Store - Password Recovery";
+            emailInfo.Body = builder.ToString();
+            emailInfo.To = info.Email;
+
+            return Send(emailInfo);
+        }
+
 
 
         public bool SendRegConfirmEmail(User info)
