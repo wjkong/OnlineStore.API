@@ -1,4 +1,4 @@
-﻿using Kong.OnlineStoreAPI.Bootstrap;
+﻿using NLog;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -9,8 +9,12 @@ namespace WebAPI
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private Logger logMgr = LogManager.GetCurrentClassLogger();
+
         protected void Application_Start()
         {
+            logMgr.Info("EStore API Application Start");
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -20,13 +24,14 @@ namespace WebAPI
 
         protected void Application_End()
         {
+            logMgr.Info("EStore API Application End");
         }
 
         protected void Application_Error()
         {
-            //Exception lastException = Server.GetLastError();
+            Exception lastException = Server.GetLastError();
 
-            //_logMgr.Error(lastException);
+            logMgr.Error(lastException);
         }
     }
 }

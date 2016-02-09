@@ -1,11 +1,13 @@
 ﻿using Kong.OnlineStoreAPI.Model;
 using Microsoft.Practices.ServiceLocation;
+using NLog;
 using System.Web.Http;
 
 namespace Kong.OnlineStoreAPI.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
+        private Logger logMgr = LogManager.GetCurrentClassLogger();
         private IUserMgr userMgr;
 
         public UserController()
