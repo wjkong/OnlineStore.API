@@ -191,7 +191,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="NLog.config">
+    <Content Include="Configurations\NLog.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
@@ -215,7 +215,9 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <None Include="NLog.xsd">
+    <Content Include="Configurations\AppSetting.config" />
+    <Content Include="Configurations\ConnectionString.config" />
+    <None Include="Configurations\NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\OnlineStore_API.pubxml" />

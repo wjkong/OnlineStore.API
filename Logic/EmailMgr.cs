@@ -1,5 +1,6 @@
 ﻿using Kong.OnlineStoreAPI.Model;
 using System.Configuration;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 
@@ -20,7 +21,19 @@ namespace Kong.OnlineStoreAPI.Logic
                 message.Subject = info.Subject;
                 message.Body = info.Body;
 
-                SmtpClient client = new SmtpClient();
+                string host = ConfigurationManager.AppSettings["SmtpHost"];
+                string username = ConfigurationManager.AppSettings["SmtpUsername"];
+                string password = ConfigurationManager.AppSettings["SmtpPassword"];
+
+                SmtpClient client = new SmtpClient
+                {
+                    Port = 25,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = host,
+                    Credentials = new NetworkCredential(username, password)
+                };
+
                 //client.EnableSsl = true;
                 client.Send(message);
 

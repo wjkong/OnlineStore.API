@@ -7,7 +7,7 @@ namespace Kong.OnlineStoreAPI.DAL
 {
     public abstract class DataAccessBase
     {
-        private readonly ConnectionStringSettings _connStrSetting = ConfigurationManager.ConnectionStrings["EStroreApiConn"];
+        private readonly ConnectionStringSettings _connStrSetting = ConfigurationManager.ConnectionStrings[ConfigurationManager.AppSettings["ConnectionStringName"]];
 
         protected DbConnection CreateConnection()
         {
