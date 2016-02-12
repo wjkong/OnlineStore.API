@@ -15,6 +15,9 @@ namespace Kong.OnlineStoreAPI.WebAPI.Controllers
             userMgr = ServiceLocator.Current.GetInstance<IUserMgr>();
         }
 
+        /// <summary>
+        /// Gets some very important data from the server.
+        /// </summary>
         [HttpGet]
         [Route("route/user/get")]
         public IHttpActionResult Retrieve()
