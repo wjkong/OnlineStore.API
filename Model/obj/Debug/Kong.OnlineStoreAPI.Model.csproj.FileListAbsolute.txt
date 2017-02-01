@@ -1,0 +1,4 @@
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\Model\bin\Debug\Kong.OnlineStoreAPI.Model.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\Model\bin\Debug\Kong.OnlineStoreAPI.Model.pdb
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\Model\obj\Debug\Kong.OnlineStoreAPI.Model.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\Model\obj\Debug\Kong.OnlineStoreAPI.Model.pdb

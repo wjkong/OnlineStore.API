@@ -1,0 +1,16 @@
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Kong.OnlineStoreAPI.DAL.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Kong.OnlineStoreAPI.DAL.pdb
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Kong.OnlineStoreAPI.Model.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Kong.OnlineStoreAPI.Model.pdb
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.Unity.xml
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.xml
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\obj\Debug\Kong.OnlineStoreAPI.DAL.csprojResolveAssemblyReference.cache
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\obj\Debug\Kong.OnlineStoreAPI.DAL.dll
+C:\Users\wjkon\Documents\Projects\OnlineStore.API\DAL\obj\Debug\Kong.OnlineStoreAPI.DAL.pdb
